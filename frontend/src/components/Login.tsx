@@ -8,11 +8,11 @@ import Typography from "@mui/material/Typography";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import Container from "@mui/material/Container";
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 
 import { SigninInterface } from "../models/ISignin";
 import Navbar from "./Navbar";
@@ -25,7 +25,6 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 function SignIn() {
-
   const [signin, setSignin] = useState<Partial<SigninInterface>>({});
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
@@ -35,7 +34,7 @@ function SignIn() {
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
     setValue(newValue);
     setSignin({});
-  }
+  };
 
   const loginuser = () => {
     const apiUrl = "http://localhost:8080/login/user";
@@ -76,7 +75,7 @@ function SignIn() {
           localStorage.setItem("id", res.data.id);
           localStorage.setItem("role", "superuser");
 
-          window.location.href = "/"
+          window.location.href = "/";
         } else {
           setError(true);
         }
@@ -84,6 +83,7 @@ function SignIn() {
   };
 
   const loginadmin = () => {
+    console.log("signin", signin);
     const apiUrl = "http://localhost:8080/login/admin";
     const requestOptions = {
       method: "POST",
@@ -99,13 +99,12 @@ function SignIn() {
           localStorage.setItem("id", res.data.id);
           localStorage.setItem("role", "admin");
 
-          window.location.href = "/"
+          window.location.href = "/";
         } else {
           setError(true);
         }
       });
   };
-
 
   const handleInputChange = (
     event: React.ChangeEvent<{ id?: string; value: any }>
@@ -115,7 +114,10 @@ function SignIn() {
     setSignin({ ...signin, [id]: value });
   };
 
-  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
     if (reason === "clickaway") {
       return;
     }
@@ -123,16 +125,12 @@ function SignIn() {
     setError(false);
   };
 
-
-
   return (
-    <div>
     <div className="Auth-form-container">
       <form className="Auth-form">
         <div className="Auth-form-content">
           <h3 className="Auth-form-title">Login</h3>
           <div className="form-group mt-3">
-            
             <input
               type="string"
               name="codeid"
@@ -143,7 +141,6 @@ function SignIn() {
             />
           </div>
           <div className="form-group mt-3">
-            
             <input
               type="password"
               name="password"
@@ -154,20 +151,26 @@ function SignIn() {
             />
           </div>
           <div className="d-grid gap-2 mt-3">
-            <button  type="button" className="btn btn-primary">
-              <a style={{color:'white'}} href="/">
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={loginadmin}
+            >
               ยืนยัน
-              </a>
+              {/* <a style={{ color: "white" }} href="/">
+                ยืนยัน
+              </a> */}
             </button>
-        </div>
-        <div className="Auth-forget">            
-                Not a member? &nbsp;
-                <a style={{ cursor: "pointer" }} href="/usercreate">  Register   </a>
-                
-            </div>
+          </div>
+          <div className="Auth-forget">
+            Not a member? &nbsp;
+            <a style={{ cursor: "pointer" }} href="/usercreate">
+              {" "}
+              Register{" "}
+            </a>
+          </div>
         </div>
       </form>
-    </div>
     </div>
   );
 }

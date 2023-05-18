@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
-import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import AccountCircleSharpIcon from "@mui/icons-material/AccountCircleSharp";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
 import FormControl from "@mui/material/FormControl";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -25,37 +25,51 @@ import { Icon } from "@mui/material";
 import { EmployeesInterface } from "../models/IUser";
 import { GendersInterface } from "../models/IUser";
 import { ProvincesInterface } from "../models/IUser";
-import { DateTimePicker } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import de from 'date-fns/locale/de';
+import { DateTimePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import de from "date-fns/locale/de";
 import { Button } from "react-bootstrap";
 import Navbar from "./Navbar";
 
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 function UserCreate() {
-    const params = useParams();
+  const params = useParams();
 
-  
-  const [prefixes, setPrefixes] = React.useState<PrefixesInterface[]>([])
+  const [prefixes, setPrefixes] = React.useState<PrefixesInterface[]>([]);
   const [employee, setEmployee] = React.useState<Partial<EmployeesInterface>>({
-    First_Name: "", Last_Name: ""
-  })
-  const [genders, setGenders] = React.useState<GendersInterface[]>([])
-  const [provinces, setProvinces] = React.useState<ProvincesInterface[]>([])
+    First_Name: "",
+    Last_Name: "",
+  });
+  const [genders, setGenders] = React.useState<GendersInterface[]>([]);
+  const [provinces, setProvinces] = React.useState<ProvincesInterface[]>([]);
 
   const [user, setUser] = React.useState<Partial<UsersInterface>>({
-    ProvinceID: 0, NamePrefixID: 0, EmployeeID: 0, GenderID: 0, BirthDay: new Date(),
-    FirstName: "", LastName: "", Email: "", Password: "", Identification: "", Mobile: "",
+    ProvinceID: 0,
+    NamePrefixID: 0,
+    EmployeeID: 0,
+    GenderID: 0,
+    BirthDay: new Date(),
+    FirstName: "",
+    LastName: "",
+    Email: "",
+    Password: "",
+    Identification: "",
+    Mobile: "",
     Address: "",
   });
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
 
-  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
     if (reason === "clickaway") {
       return;
     }
@@ -70,10 +84,11 @@ function UserCreate() {
     const name = event.target.name as keyof typeof UserCreate;
     const { value } = event.target;
     setUser({ ...user, [name]: value });
-  }
+  };
 
-  
-  const handleInputChange = (event: React.ChangeEvent<{ id?: string; value: any }>) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<{ id?: string; value: any }>
+  ) => {
     const id = event.target.id as keyof typeof UserCreate;
     const { value } = event.target;
     setUser({ ...user, [id]: value });
@@ -83,34 +98,31 @@ function UserCreate() {
     const apiUrl = "http://localhost:8080/nameprefixes";
     const requestOptions = {
       method: "GET",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}` 
-      }
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
     };
-
-    
 
     fetch(apiUrl, requestOptions)
       .then((response) => response.json())
       .then((res) => {
         if (res.data) {
-          setPrefixes(res.data);  
+          setPrefixes(res.data);
         } else {
-          console.log(res.error); 
+          console.log(res.error);
         }
       });
-  }
-
+  };
 
   const getGender = async () => {
     const apiUrl = "http://localhost:8080/genders";
     const requestOptions = {
       method: "GET",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}` 
-      }
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
     };
 
     fetch(apiUrl, requestOptions)
@@ -122,48 +134,40 @@ function UserCreate() {
           console.log(res.error);
         }
       });
-  }
-
-  
+  };
 
   function submit() {
-
     let data = {
       FirstName: user.FirstName ?? "",
       LastName: user.LastName ?? "",
       Email: user.Email ?? "",
       Password: user.Password ?? "",
-     
     };
     console.log(data);
-    
+
     const apiUrl = "http://localhost:8080/users";
     const requestOptions = {
       method: "POST",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}` 
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify(data),
     };
 
-
-    
     fetch(apiUrl, requestOptions)
       .then((response) => response.json())
       .then((res) => {
         if (res.data) {
-          console.log(res.data);    
-          setSuccess(true);       
-          
+          console.log(res.data);
+          setSuccess(true);
         } else {
-          setError(true);       
-          console.log(res.error); 
+          setError(true);
+          console.log(res.error);
         }
       });
   }
 
-  
   useEffect(() => {
     getPrefix();
     getGender();
@@ -172,10 +176,6 @@ function UserCreate() {
   console.log(user);
 
   return (
-    <div>
-    <Navbar />
-
-
     <Container maxWidth="md">
       <Snackbar
         open={success}
@@ -193,14 +193,19 @@ function UserCreate() {
         </Alert>
       </Snackbar>
       <Paper>
-        <Box display="flex" sx={{ marginTop: 2, }}>
+        <Box display="flex" sx={{ marginTop: 2 }}>
           <Box sx={{ paddingX: 2, paddingY: 1 }}>
             <Grid container spacing={2} sx={{ paddingX: 20 }}>
-              <Grid item xs={3} >
+              <Grid item xs={3}>
                 <AccountCircleSharpIcon fontSize="large" color="primary" />
               </Grid>
               <Grid item xs={9}>
-                <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                <Typography
+                  component="h2"
+                  variant="h6"
+                  color="primary"
+                  gutterBottom
+                >
                   Create User
                 </Typography>
               </Grid>
@@ -208,43 +213,87 @@ function UserCreate() {
           </Box>
         </Box>
         <Divider />
-        
+
         <Grid container spacing={1} sx={{ padding: 2 }}>
-          <Grid item xs={3} sx={{ textAlign: 'right' }}><p>First Name</p></Grid>
-          <Grid item xs={3}><TextField id="FirstName" value={user.FirstName} onChange={handleInputChange} label="First Name" variant="outlined" /></Grid>
-         
+          <Grid item xs={3} sx={{ textAlign: "right" }}>
+            <p>First Name</p>
+          </Grid>
+          <Grid item xs={3}>
+            <TextField
+              id="FirstName"
+              value={user.FirstName}
+              onChange={handleInputChange}
+              label="First Name"
+              variant="outlined"
+            />
+          </Grid>
         </Grid>
         <Grid container spacing={1} sx={{ padding: 2 }}>
-          <Grid item xs={3} sx={{ textAlign: 'right' }}><p>Last Name</p></Grid>
-          <Grid item xs={3}><TextField id="LastName" value={user.LastName} onChange={handleInputChange} label="Last Name" variant="outlined" /></Grid>
-        </Grid>
-        
-        <Grid container spacing={2} sx={{ padding: 2 }}>
-          <Grid item xs={3} sx={{ textAlign: 'right' }}><p>Email</p></Grid>
-          <Grid item xs={3}><TextField id="Email" value={user.Email} onChange={handleInputChange} label="Email" variant="outlined" /></Grid>
+          <Grid item xs={3} sx={{ textAlign: "right" }}>
+            <p>Last Name</p>
+          </Grid>
+          <Grid item xs={3}>
+            <TextField
+              id="LastName"
+              value={user.LastName}
+              onChange={handleInputChange}
+              label="Last Name"
+              variant="outlined"
+            />
+          </Grid>
         </Grid>
 
         <Grid container spacing={2} sx={{ padding: 2 }}>
-          <Grid item xs={3} sx={{ textAlign: 'right' }}><p>Password</p></Grid>
-          <Grid item xs={3}><TextField id="Password" value={user.Password} type="password" onChange={handleInputChange} label="Password" variant="outlined" /></Grid>
+          <Grid item xs={3} sx={{ textAlign: "right" }}>
+            <p>Email</p>
+          </Grid>
+          <Grid item xs={3}>
+            <TextField
+              id="Email"
+              value={user.Email}
+              onChange={handleInputChange}
+              label="Email"
+              variant="outlined"
+            />
+          </Grid>
         </Grid>
- 
+
+        <Grid container spacing={2} sx={{ padding: 2 }}>
+          <Grid item xs={3} sx={{ textAlign: "right" }}>
+            <p>Password</p>
+          </Grid>
+          <Grid item xs={3}>
+            <TextField
+              id="Password"
+              value={user.Password}
+              type="password"
+              onChange={handleInputChange}
+              label="Password"
+              variant="outlined"
+            />
+          </Grid>
+        </Grid>
+
         <Divider />
         <Grid container spacing={2}>
-          <Grid item xs={5} sx={{ textAlign: 'right', marginTop: 2, paddingX: 4, paddingY: 1, marginBottom: 2 }}>
-            <Button
-              onClick={submit}
-              variant="primary"
-            >
+          <Grid
+            item
+            xs={5}
+            sx={{
+              textAlign: "right",
+              marginTop: 2,
+              paddingX: 4,
+              paddingY: 1,
+              marginBottom: 2,
+            }}
+          >
+            <Button onClick={submit} variant="primary">
               Sign up
             </Button>
           </Grid>
         </Grid>
       </Paper>
-    
     </Container>
-    </div>
-
   );
 }
 export default UserCreate;
