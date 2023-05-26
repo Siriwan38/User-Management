@@ -46,8 +46,6 @@ func main() {
 
 	// Authentication Routes
 	r.POST("/login/user", controller.LoginUser)
-	r.POST("/login/superuser", controller.LoginSuperUser)
-	r.POST("/login/admin", controller.LoginAdmin)
 
 	// Run the server
 	r.Run()

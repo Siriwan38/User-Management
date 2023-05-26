@@ -24,7 +24,7 @@ func SetupDatabase() {
 
 	// Migrate the schema
 
-	database.AutoMigrate(&User{}, &Admin{}, &SuperUser{}, &Role{})
+	database.AutoMigrate(&User{}, &Role{})
 
 	db = database
 	role1 := Role{
@@ -45,24 +45,24 @@ func SetupDatabase() {
 	db.Model(&Role{}).Create(&role3)
 	// Employee --------------------------------------------------------------------------------------------------------
 	password1, err := bcrypt.GenerateFromPassword([]byte("123456"), 14)
-	admin1 := Admin{
+	admin1 := User{
 		FirstName: "Siri",
 		LastName:  "OK",
 		Email:     "Siri@gmail.com",
 		Password:  string(password1),
 		Role:      role1,
 	}
-	db.Model(&Admin{}).Create(&admin1)
+	db.Model(&User{}).Create(&admin1)
 
 	password2, err := bcrypt.GenerateFromPassword([]byte("456789"), 14)
-	superuser1 := SuperUser{
+	superuser1 := User{
 		FirstName: "Araya",
 		LastName:  "OK",
 		Email:     "Ay@gmail.com",
 		Password:  string(password2),
 		Role:      role2,
 	}
-	db.Model(&SuperUser{}).Create(&superuser1)
+	db.Model(&User{}).Create(&superuser1)
 
 	//User ------------------------------
 	password3, err := bcrypt.GenerateFromPassword([]byte("123456"), 14)

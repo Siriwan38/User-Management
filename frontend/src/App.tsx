@@ -4,7 +4,6 @@ import Navbar from "./components/Navbar";
 // import SignIn from "./components/signin";
 import SignIn from "./components/Login";
 import UserCreate from "./components/UserCreate";
-import Header from "./components/Header";
 import "./App.css"
 import Navr from "./components/Navr";
 import LoginAdmin from "./components/LoginAdmin";
@@ -44,7 +43,6 @@ export default function App() {
          <Route path="/superuser" element={<BookingCreate />} /> */}
          {/* <Route path="/user" element={<Users/>}/> */}
          <Route path="/usercreate" element={<UserCreate />}/>
-         <Route path="/header" element={<Header />}/>
          <Route path="/navr" element={<Navr />}/>
          <Route path="/loginadmin" element={<LoginAdmin />}/>
          <Route path="/loginsuperuser" element={<LoginSuperuser />}/>

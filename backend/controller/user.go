@@ -14,10 +14,6 @@ func GetUser(c *gin.Context) {
 	var user entity.User
 	id := c.Param("id")
 	if err := entity.DB().Raw("SELECT * FROM users WHERE id = ?", id).
-		Preload("NamePrefix").
-		Preload("Employee").
-		Preload("Gender").
-		Preload("Province").
 		Find(&user).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -63,10 +59,6 @@ func CreateUser(c *gin.Context) {
 func ListUsers(c *gin.Context) {
 	var users []entity.User
 	if err := entity.DB().Raw("SELECT * FROM users").
-		Preload("NamePrefix").
-		Preload("Employee").
-		Preload("Gender").
-		Preload("Province").
 		Find(&users).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

@@ -1,4 +1,5 @@
 import React from 'react'
+import Navr from '../components/Navr'
 import "./About.css"
 
 let bannerData = {
@@ -8,7 +9,7 @@ let bannerData = {
 
 function Banner() {
     return (
-        <div className="banner-bg">
+        <><Navr /><div className="banner-bg">
             <div className="container">
                 <div className="banner-con">
                     <div className="banner-text">
@@ -20,7 +21,7 @@ function Banner() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div></>
     )
 }
 
