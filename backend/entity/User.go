@@ -15,3 +15,8 @@ type User struct {
 	RoleID *uint
 	Role   Role `gorm:"references:id" valid:"-"`
 }
+type Role struct {
+	gorm.Model
+	Name string
+	User []User `gorm:"foreignKey:RoleID"`
+}

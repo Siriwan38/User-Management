@@ -14,7 +14,7 @@ func DB() *gorm.DB {
 
 func SetupDatabase() {
 
-	database, err := gorm.Open(sqlite.Open("sa-65.db"), &gorm.Config{})
+	database, err := gorm.Open(sqlite.Open("Usermanagement.db"), &gorm.Config{})
 
 	if err != nil {
 
@@ -24,7 +24,7 @@ func SetupDatabase() {
 
 	// Migrate the schema
 
-	database.AutoMigrate(&User{}, &Admin{}, &SuperUser{}, &Role{})
+	database.AutoMigrate(&User{}, &Role{})
 
 	db = database
 	role1 := Role{
@@ -44,36 +44,26 @@ func SetupDatabase() {
 	}
 	db.Model(&Role{}).Create(&role3)
 	// Employee --------------------------------------------------------------------------------------------------------
-	password1, err := bcrypt.GenerateFromPassword([]byte("123456"), 14)
-	admin1 := Admin{
-		FirstName: "Siri",
-		LastName:  "OK",
-		Email:     "Siri@gmail.com",
-		Password:  string(password1),
-		Role:      role1,
-	}
-	db.Model(&Admin{}).Create(&admin1)
-
-	password2, err := bcrypt.GenerateFromPassword([]byte("456789"), 14)
-	superuser1 := SuperUser{
-		FirstName: "Araya",
-		LastName:  "OK",
-		Email:     "Ay@gmail.com",
-		Password:  string(password2),
-		Role:      role2,
-	}
-	db.Model(&SuperUser{}).Create(&superuser1)
 
 	//User ------------------------------
-	password3, err := bcrypt.GenerateFromPassword([]byte("123456"), 14)
+	password, err := bcrypt.GenerateFromPassword([]byte("123456"), 14)
 
 	user1 := User{
 		FirstName: "Suphawut",
 		LastName:  "Thueanklang",
 		Email:     "ADD@gmail.com",
-		Password:  string(password3),
+		Password:  string(password),
 		Role:      role3,
 	}
 	db.Model(&User{}).Create(&user1)
+
+	user2 := User{
+		FirstName: "Suphawut",
+		LastName:  "Thueanklang",
+		Email:     "BB@gmail.com",
+		Password:  string(password),
+		Role:      role2,
+	}
+	db.Model(&User{}).Create(&user2)
 
 }

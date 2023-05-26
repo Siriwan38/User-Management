@@ -1,21 +1,8 @@
 import React, { useState } from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Snackbar from "@mui/material/Snackbar";
+
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import Container from "@mui/material/Container";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
 
 import { SigninInterface } from "../models/ISignin";
-import Navbar from "./Navbar";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -50,57 +37,11 @@ function SignIn() {
           setSuccess(true);
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("id", res.data.id);
-          localStorage.setItem("role", "user");
-
+          localStorage.setItem("role", res.data.role);
           window.location.href = "/";
         } else {
           setError(true);
-        }
-      });
-  };
-
-  const loginsuperuser = () => {
-    const apiUrl = "http://localhost:8080/login/superuser";
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(signin),
-    };
-    fetch(apiUrl, requestOptions)
-      .then((response) => response.json())
-      .then((res) => {
-        if (res.data) {
-          setSuccess(true);
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("id", res.data.id);
-          localStorage.setItem("role", "superuser");
-
-          window.location.href = "/";
-        } else {
-          setError(true);
-        }
-      });
-  };
-
-  const loginadmin = () => {
-    const apiUrl = "http://localhost:8080/login/admin";
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(signin),
-    };
-    fetch(apiUrl, requestOptions)
-      .then((response) => response.json())
-      .then((res) => {
-        if (res.data) {
-          setSuccess(true);
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("id", res.data.id);
-          localStorage.setItem("role", "admin");
-
-          window.location.href = "/";
-        } else {
-          setError(true);
+          alert("fail to login");
         }
       });
   };
@@ -133,8 +74,8 @@ function SignIn() {
             <div className="form-group mt-3">
               <input
                 type="string"
-                name="codeid"
-                id="codeid"
+                name="email"
+                id="email"
                 onChange={handleInputChange}
                 className="form-control mt-1"
                 placeholder="Email"
@@ -151,10 +92,14 @@ function SignIn() {
               />
             </div>
             <div className="d-grid gap-2 mt-3">
-              <button type="button" className="btn btn-primary">
-                <a style={{ color: "white" }} href="/navr">
-                  ยืนยัน
-                </a>
+              <button
+                onClick={() => {
+                  loginuser();
+                }}
+                type="button"
+                className="btn btn-primary"
+              >
+                <a style={{ color: "white" }}>ยืนยัน</a>
               </button>
             </div>
 
