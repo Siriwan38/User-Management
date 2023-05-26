@@ -24,9 +24,25 @@ func SetupDatabase() {
 
 	// Migrate the schema
 
-	database.AutoMigrate(&User{}, &Admin{}, &SuperUser{}, &Gender{}, &NamePrefix{})
+	database.AutoMigrate(&User{}, &Admin{}, &SuperUser{}, &Role{})
 
 	db = database
+	role1 := Role{
+		Name: "Admin",
+	}
+	db.Model(&Role{}).Create(&role1)
+
+	db = database
+	role2 := Role{
+		Name: "Superuser",
+	}
+	db.Model(&Role{}).Create(&role2)
+
+	db = database
+	role3 := Role{
+		Name: "User",
+	}
+	db.Model(&Role{}).Create(&role3)
 	// Employee --------------------------------------------------------------------------------------------------------
 	password1, err := bcrypt.GenerateFromPassword([]byte("123456"), 14)
 	admin1 := Admin{
@@ -34,6 +50,7 @@ func SetupDatabase() {
 		LastName:  "OK",
 		Email:     "Siri@gmail.com",
 		Password:  string(password1),
+		Role:      role1,
 	}
 	db.Model(&Admin{}).Create(&admin1)
 
@@ -43,47 +60,19 @@ func SetupDatabase() {
 		LastName:  "OK",
 		Email:     "Ay@gmail.com",
 		Password:  string(password2),
+		Role:      role2,
 	}
 	db.Model(&SuperUser{}).Create(&superuser1)
-
-	// NamePrefix ----------------------------------------------------------------------------------------
-
-	prefix1 := NamePrefix{PrefixName: "Master"}
-	db.Model(&NamePrefix{}).Create(&prefix1)
-
-	prefix2 := NamePrefix{PrefixName: "Mister"}
-	db.Model(&NamePrefix{}).Create(&prefix2)
-
-	prefix3 := NamePrefix{PrefixName: "Mistress"}
-	db.Model(&NamePrefix{}).Create(&prefix3)
-
-	prefix4 := NamePrefix{PrefixName: "Miss"}
-	db.Model(&NamePrefix{}).Create(&prefix4)
-
-	// Gender ----------------------------------------------------------------------------------------
-
-	gender1 := Gender{GenderName: "Male"}
-	db.Model(&Gender{}).Create(&gender1)
-
-	gender2 := Gender{GenderName: "Female"}
-	db.Model(&Gender{}).Create(&gender2)
-
-	gender3 := Gender{GenderName: "Other"}
-	db.Model(&Gender{}).Create(&gender3)
 
 	//User ------------------------------
 	password3, err := bcrypt.GenerateFromPassword([]byte("123456"), 14)
 
 	user1 := User{
-		FirstName:      "Suphawut",
-		LastName:       "Thueanklang",
-		NamePrefix:     prefix2,
-		Identification: "1532233354543",
-		Email:          "ADD@gmail.com",
-		Password:       string(password3),
-		Gender:         gender1,
-		Mobile:         "0863321475",
-		Address:        "123",
+		FirstName: "Suphawut",
+		LastName:  "Thueanklang",
+		Email:     "ADD@gmail.com",
+		Password:  string(password3),
+		Role:      role3,
 	}
 	db.Model(&User{}).Create(&user1)
 

@@ -2,33 +2,11 @@ package controller
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/Siriwan38/project-app/entity"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
-
-type UserPayload struct {
-	NamePrefixID *uint
-
-	FirstName string
-	LastName  string
-
-	BirthDay       time.Time
-	Identification string
-	Email          string
-	Password       string
-
-	GenderID *uint
-
-	Mobile  string
-	Address string
-
-	ProvinceID *uint
-
-	EmployeeID *uint
-}
 
 // GET /user/:id
 // ส่งข้อมูลทั้งตัวหลักและตัวย่อยไปที่หน้าบ้านด้วย id ที่ระบุมา
@@ -49,39 +27,11 @@ func GetUser(c *gin.Context) {
 
 // POST /users
 func CreateUser(c *gin.Context) {
-	var user UserPayload
-	var gender entity.Gender
-	var nameprefix entity.NamePrefix
-	var province entity.Province
-	var employee entity.Employee
+	var user entity.User
 
 	// ผลลัพธ์ที่ได้จากขั้นตอนที่ 7 จะถูก bind เข้าตัวแปร user
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	}
-
-	// 8: ค้นหา nameprefix ด้วย id
-	if tx := entity.DB().Table("name_prefixes").Where("id = ?", user.NamePrefixID).First(&nameprefix); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "nameprefix not found"})
-		return
-	}
-
-	// 9: ค้นหา employee ด้วย id
-	if tx := entity.DB().Model(&entity.Employee{}).Where("id = ?", user.EmployeeID).First(&employee); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
-		return
-	}
-
-	// 10: ค้นหา gender ด้วย id
-	if tx := entity.DB().Model(&entity.Gender{}).Where("id = ?", user.GenderID).First(&gender); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "gender not found"})
-		return
-	}
-
-	// 11: ค้นหา province ด้วย id
-	if tx := entity.DB().Model(&entity.Province{}).Where("id = ?", user.ProvinceID).First(&province); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "province not found"})
-		return
 	}
 
 	// เข้ารหัสลับรหัสผ่านที่ผู้ใช้กรอกก่อนบันทึกลงฐานข้อมูล
@@ -94,18 +44,10 @@ func CreateUser(c *gin.Context) {
 
 	// 12: สร้าง user
 	u := entity.User{
-		FirstName:      user.FirstName,
-		LastName:       user.LastName,
-		NamePrefix:     nameprefix, // โยงความสัมพันธ์กับ Entity NamePrefix
-		Gender:         gender,     // โยงความสัมพันธ์กับ Entity Gender
-		Province:       province,   // โยงความสัมพันธ์กับ Entiy Province
-		Password:       user.Password,
-		Employee:       employee, // โยงความสัมพันธ์กับ Entiy Employee
-		Address:        user.Address,
-		Email:          user.Email,
-		Identification: user.Identification,
-		BirthDay:       user.BirthDay,
-		Mobile:         user.Mobile,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+		Password:  user.Password,
+		Email:     user.Email,
 	}
 
 	// 13: บันทึก

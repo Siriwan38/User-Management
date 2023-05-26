@@ -129,7 +129,7 @@ function SignIn() {
       <div className="Auth-form-container">
         <form className="Auth-form">
           <div className="Auth-form-content">
-            <h3 className="Auth-form-title">Login </h3>
+            <h3 className="Auth-form-title">Login Admin</h3>
             <div className="form-group mt-3">
               <input
                 type="string"
@@ -158,27 +158,8 @@ function SignIn() {
               </button>
             </div>
 
-            <div className="Auth-forget">
-              Not a member? &nbsp;
-              <a style={{ cursor: "pointer" }} href="/usercreate">
-                {" "}
-                Register{" "}
-              </a>
-            </div>
-            {/* <div className="Auth-forget">
-              Not a member? &nbsp;
-              <a style={{ cursor: "pointer" }} href="/loginadmin">
-                {" "}
-                Admin{" "}
-              </a>
-            </div>
-            <div className="Auth-forget">
-              Not a member? &nbsp;
-              <a style={{ cursor: "pointer" }} href="/loginsuperuser">
-                {" "}
-                Superuser{" "}
-              </a>
-            </div> */}
+            
+            
           </div>
         </form>
       </div>
