@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Siriwan38/project-app/entity"
@@ -43,7 +44,11 @@ func LoginUser(c *gin.Context) {
 	}
 
 	// ตรวจสอบรหัสผ่าน
+
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(payload.Password))
+	fmt.Printf("%v", user.Password)
+	fmt.Printf("%v", payload.Password)
+	fmt.Printf("%v", err)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid user credentials"})
 		return

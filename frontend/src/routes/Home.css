@@ -3,26 +3,26 @@
     margin: 0 auto;
 }
 
-.banner-bg {
-    height: 500px;
-    background: url("https://images.unsplash.com/photo-1617042375876-a13e36732a04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80") no-repeat;
+.home-bg {
+    height: 750px;
+    background: url("https://img.freepik.com/free-photo/autumn-season-mountain-fuji-kawaguchiko-lake-japan_335224-96.jpg?w=1380&t=st=1685672636~exp=1685673236~hmac=76202ea5dfbb409291dcd1d59d3671acf8899ce22e4cc0c91e4dc9016e95525a") no-repeat;
     background-size: cover;
     overflow: hidden;
 }
 
-.banner-con {
+.home-con {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 500px;
 }
 
-.banner-text {
+.home-text {
     color: #fff;
     text-align: center;
 }
 
-.banner-btn {
+.home-btn {
     background: #fff;
     display: inline-block;
     padding: .5rem 1rem;
@@ -35,14 +35,14 @@
     text-transform: uppercase;
 }
 
-.banner-btn:hover {
+.home-btn:hover {
     border: 2px solid #fff;
     background: transparent;
     color: #fff;
 }
 
 @media screen and (max-width: 480px) {
-    .banner-text {
+    .home-text {
         padding: 0 2rem;
     }
 }

@@ -15,18 +15,12 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Snackbar from "@mui/material/Snackbar";
-import { PrefixesInterface } from "../models/IUser";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { UsersInterface } from "../models/IUser";
 // import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 // import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Icon } from "@mui/material";
-import { EmployeesInterface } from "../models/IUser";
-import { GendersInterface } from "../models/IUser";
-import { ProvincesInterface } from "../models/IUser";
-import { DateTimePicker } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import de from "date-fns/locale/de";
 import { Button } from "react-bootstrap";
 
@@ -40,27 +34,14 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 function UserCreate() {
   const params = useParams();
 
-  const [prefixes, setPrefixes] = React.useState<PrefixesInterface[]>([]);
-  const [employee, setEmployee] = React.useState<Partial<EmployeesInterface>>({
-    First_Name: "",
-    Last_Name: "",
-  });
-  const [genders, setGenders] = React.useState<GendersInterface[]>([]);
-  const [provinces, setProvinces] = React.useState<ProvincesInterface[]>([]);
-
+  
   const [user, setUser] = React.useState<Partial<UsersInterface>>({
-    ProvinceID: 0,
-    NamePrefixID: 0,
-    EmployeeID: 0,
-    GenderID: 0,
-    BirthDay: new Date(),
+    
     FirstName: "",
     LastName: "",
     Email: "",
     Password: "",
-    Identification: "",
-    Mobile: "",
-    Address: "",
+    
   });
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
@@ -73,7 +54,7 @@ function UserCreate() {
       return;
     }
     if (success === true) {
-      window.location.href = "/user";
+      window.location.href = "/";
     }
     setSuccess(false);
     setError(false);
@@ -93,47 +74,7 @@ function UserCreate() {
     setUser({ ...user, [id]: value });
   };
 
-  const getPrefix = async () => {
-    const apiUrl = "http://localhost:8080/nameprefixes";
-    const requestOptions = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
-
-    fetch(apiUrl, requestOptions)
-      .then((response) => response.json())
-      .then((res) => {
-        if (res.data) {
-          setPrefixes(res.data);
-        } else {
-          console.log(res.error);
-        }
-      });
-  };
-
-  const getGender = async () => {
-    const apiUrl = "http://localhost:8080/genders";
-    const requestOptions = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
-
-    fetch(apiUrl, requestOptions)
-      .then((response) => response.json())
-      .then((res) => {
-        if (res.data) {
-          setGenders(res.data);
-        } else {
-          console.log(res.error);
-        }
-      });
-  };
+  
 
   function submit() {
     let data = {
@@ -168,8 +109,7 @@ function UserCreate() {
   }
 
   useEffect(() => {
-    getPrefix();
-    getGender();
+    
   }, []);
 
   console.log(user);

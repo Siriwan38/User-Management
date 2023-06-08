@@ -21,9 +21,12 @@ func main() {
 		{
 			//User
 			// User Routes
+			protected.POST("/users", controller.CreateUser)
 			protected.GET("/users", controller.ListUsers)
 			protected.GET("/user/:id", controller.GetUser)
-			protected.POST("/users", controller.CreateUser)
+			protected.PATCH("/users", controller.UpdateUser)
+			protected.DELETE("/Users/:id", controller.DeleteUser)
+
 			// // Province Routes
 			// protected.GET("/provinces", controller_user.ListProvince)
 			// protected.GET("/province/:id", controller_user.GetProvince)
@@ -46,6 +49,7 @@ func main() {
 
 	// Authentication Routes
 	r.POST("/login/user", controller.LoginUser)
+	// r.POST("/users", controller.CreateUser)
 
 	// Run the server
 	r.Run()

@@ -49,8 +49,8 @@ func SetupDatabase() {
 	password, err := bcrypt.GenerateFromPassword([]byte("123456"), 14)
 
 	user1 := User{
-		FirstName: "Suphawut",
-		LastName:  "Thueanklang",
+		FirstName: "Taylor",
+		LastName:  "Swift",
 		Email:     "ADD@gmail.com",
 		Password:  string(password),
 		Role:      role3,
@@ -65,5 +65,14 @@ func SetupDatabase() {
 		Role:      role2,
 	}
 	db.Model(&User{}).Create(&user2)
+
+	user3 := User{
+		FirstName: "Suphawut",
+		LastName:  "Thueanklang",
+		Email:     "AA@gmail.com",
+		Password:  string(password),
+		Role:      role1,
+	}
+	db.Model(&User{}).Create(&user3)
 
 }

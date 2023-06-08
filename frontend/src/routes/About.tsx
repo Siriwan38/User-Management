@@ -8,15 +8,15 @@ let bannerData = {
 
 function Banner() {
     return (
-        <div className="banner-bg">
+        <div className="about-bg">
             <div className="container">
-                <div className="banner-con">
-                    <div className="banner-text">
+                <div className="about-con">
+                    <div className="about-text">
                         <h1>{bannerData.title}</h1>
                         <p>
                             {bannerData.desc}
                         </p>
-                        <a href="#" className="banner-btn">Learn More</a>
+                        <a href="#" className="about-btn">Blackpink in your area</a>
                     </div>
                 </div>
             </div>

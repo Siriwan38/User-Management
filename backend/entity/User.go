@@ -13,7 +13,7 @@ type User struct {
 	Password  string `json:"-"`
 
 	RoleID *uint
-	Role   Role `gorm:"references:id" valid:"-"`
+	Role   Role `gorm:"references:id"`
 }
 type Role struct {
 	gorm.Model

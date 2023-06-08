@@ -3,26 +3,26 @@
     margin: 0 auto;
 }
 
-.banner-bg {
-    height: 500px;
-    background: url("https://img.freepik.com/free-photo/html-css-collage-concept_23-2150061955.jpg?size=626&ext=jpg") no-repeat;
+.about-bg {
+    height: 900px;
+    background: url("https://images8.alphacoders.com/127/1270570.jpg") no-repeat;
     background-size: cover;
     overflow: hidden;
 }
 
-.banner-con {
+.about-con {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 500px;
 }
 
-.banner-text {
+.about-text {
     color: #fff;
     text-align: center;
 }
 
-.banner-btn {
+.about-btn {
     background: #fff;
     display: inline-block;
     padding: .5rem 1rem;
@@ -35,14 +35,14 @@
     text-transform: uppercase;
 }
 
-.banner-btn:hover {
+.about-btn:hover {
     border: 2px solid #fff;
     background: transparent;
     color: #fff;
 }
 
 @media screen and (max-width: 480px) {
-    .banner-text {
+    .about-text {
         padding: 0 2rem;
     }
 }

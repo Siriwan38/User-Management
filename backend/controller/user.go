@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/Siriwan38/project-app/entity"
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -14,10 +15,6 @@ func GetUser(c *gin.Context) {
 	var user entity.User
 	id := c.Param("id")
 	if err := entity.DB().Raw("SELECT * FROM users WHERE id = ?", id).
-		Preload("NamePrefix").
-		Preload("Employee").
-		Preload("Gender").
-		Preload("Province").
 		Find(&user).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -28,10 +25,16 @@ func GetUser(c *gin.Context) {
 // POST /users
 func CreateUser(c *gin.Context) {
 	var user entity.User
+	var role entity.Role
 
 	// ผลลัพธ์ที่ได้จากขั้นตอนที่ 7 จะถูก bind เข้าตัวแปร user
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+
+	if err := entity.DB().Raw("SELECT * FROM roles WHERE id = ?", 3).Scan(&role).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	// เข้ารหัสลับรหัสผ่านที่ผู้ใช้กรอกก่อนบันทึกลงฐานข้อมูล
@@ -48,6 +51,7 @@ func CreateUser(c *gin.Context) {
 		LastName:  user.LastName,
 		Password:  user.Password,
 		Email:     user.Email,
+		Role:      role,
 	}
 
 	// 13: บันทึก
@@ -63,13 +67,70 @@ func CreateUser(c *gin.Context) {
 func ListUsers(c *gin.Context) {
 	var users []entity.User
 	if err := entity.DB().Raw("SELECT * FROM users").
-		Preload("NamePrefix").
-		Preload("Employee").
-		Preload("Gender").
-		Preload("Province").
 		Find(&users).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": users})
+}
+
+func UpdateUser(c *gin.Context) {
+
+	var payload entity.User
+	var newpayload entity.User
+
+	if err := c.ShouldBindJSON(&payload); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", payload.ID).First(&newpayload); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "payment not found"})
+		return
+	}
+
+	newpayload.FirstName = payload.FirstName
+	newpayload.LastName = payload.LastName
+	newpayload.Email = payload.Email
+	newpayload.RoleID = payload.RoleID
+
+	updatepm := entity.User{
+		FirstName: newpayload.FirstName,
+		LastName:  newpayload.LastName,
+		Email:     newpayload.Email,
+		RoleID:    newpayload.RoleID,
+	}
+	if _, err := govalidator.ValidateStruct(updatepm); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := entity.DB().Save(&newpayload).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": newpayload})
+}
+
+// DELETE /payment/:id
+func DeleteUser(c *gin.Context) {
+	id := c.Param("id")
+	var users []entity.User
+
+	if tx := entity.DB().Exec("DELETE FROM users WHERE id = ?", id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "user not found"})
+		return
+	}
+	if err := entity.DB().
+		Preload("FirstName").
+		Preload("LastName").
+		Preload("Email").
+		Preload("Role").
+		Raw("SELECT * FROM users").Find(&users).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": "Updating Success!", "data": users})
 }

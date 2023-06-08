@@ -27,32 +27,32 @@ function CollapsibleExample() {
     <>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="#home">User-Management</Navbar.Brand>
+          <Navbar.Brand href="/">User-Management</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="#pricing">About</Nav.Link>
+              <Nav.Link href="/about">About</Nav.Link>
 
               {role === "Superuser" && (
                 <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">Task</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.1">Member</NavDropdown.Item>
+                  <NavDropdown.Item href="dropdown/tasksuperuser">Task</NavDropdown.Item>
+                  <NavDropdown.Item href="/users">Member</NavDropdown.Item>
                 </NavDropdown>
               )}
 
               {role === "Admin" && (
                 <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">
+                  <NavDropdown.Item href="/dropdown/dashboard">
                     Dashboard
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.1">Group</NavDropdown.Item>
+                  <NavDropdown.Item href="/dropdown/group">Group</NavDropdown.Item>
                 </NavDropdown>
               )}
 
               {role === "User" && (
                 <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">Task</NavDropdown.Item>
+                  <NavDropdown.Item href="/dropdown/taskuser">Task</NavDropdown.Item>
                 </NavDropdown>
               )}
             </Nav>
@@ -64,7 +64,7 @@ function CollapsibleExample() {
               )}
               {/* {token && (
                 )} */}
-              {!token && <Nav.Link href="#pricing">Login</Nav.Link>}
+              {!token && <Nav.Link href="/login">Login</Nav.Link>}
             </Nav>
           </Navbar.Collapse>
         </Container>
