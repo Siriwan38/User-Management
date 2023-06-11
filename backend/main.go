@@ -21,7 +21,7 @@ func main() {
 		{
 			//User
 			// User Routes
-			protected.POST("/users", controller.CreateUser)
+			// protected.POST("/users", controller.CreateUser)
 			protected.GET("/users", controller.ListUsers)
 			protected.GET("/user/:id", controller.GetUser)
 			protected.PATCH("/users", controller.UpdateUser)
@@ -49,7 +49,7 @@ func main() {
 
 	// Authentication Routes
 	r.POST("/login/user", controller.LoginUser)
-	// r.POST("/users", controller.CreateUser)
+	r.POST("/users", controller.CreateUser)
 
 	// Run the server
 	r.Run()

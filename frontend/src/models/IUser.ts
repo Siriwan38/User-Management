@@ -1,5 +1,5 @@
 export interface UsersInterface {
-    ID: string,
+    ID: number,
     
     FirstName: string;
     LastName: string;
@@ -12,9 +12,8 @@ export interface UsersInterface {
 }  
 
 export interface RolesInterface {
-    ID: string,
-    
-    Name:   string;
+    ID: number,
+    Name: string;
     
     
 }  

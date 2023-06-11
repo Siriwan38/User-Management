@@ -14,7 +14,7 @@ import (
 func GetUser(c *gin.Context) {
 	var user entity.User
 	id := c.Param("id")
-	if err := entity.DB().Raw("SELECT * FROM users WHERE id = ?", id).
+	if err := entity.DB().Preload("Role").Raw("SELECT * FROM users WHERE id = ?", id).
 		Find(&user).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -66,7 +66,7 @@ func CreateUser(c *gin.Context) {
 // ส่งข้อมูลทั้งตัวหลักและตัวย่อยไปหน้าบ้านทั้งหมด
 func ListUsers(c *gin.Context) {
 	var users []entity.User
-	if err := entity.DB().Raw("SELECT * FROM users").
+	if err := entity.DB().Preload("Role").Raw("SELECT * FROM users WHERE role_id != 1 ORDER BY role_id").
 		Find(&users).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

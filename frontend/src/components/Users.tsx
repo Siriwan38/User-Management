@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { UsersInterface } from "../models/IUser";
+import { UsersInterface, RolesInterface } from "../models/IUser";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import DialogTitle from "@mui/material/DialogTitle/DialogTitle";
 import IconButton from "@mui/material/IconButton/IconButton";
@@ -13,11 +13,17 @@ import DialogContent from "@mui/material/DialogContent/DialogContent";
 import DialogActions from "@mui/material/DialogActions/DialogActions";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { Grid, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { FormGroup } from "react-bootstrap";
 
 function Users() {
 
 
   const [users, setUsers] = React.useState<UsersInterface[]>([]);
+  const [roles, setRoles] = React.useState<RolesInterface>(
+   { ID: 0, 
+    Name: ""}
+    );
   const [open, setOpen] = React.useState<boolean[]>([]);
 
   const getUsers = async () => {
@@ -29,6 +35,7 @@ function Users() {
         Authorization: `Bearer ${localStorage.getItem("token")}`
       },
     };
+    
 
 
     fetch(apiUrl, requestOptions)
@@ -69,6 +76,28 @@ function Users() {
       });
     }
 
+    const updateUser = (id: any) => {
+      console.log(id);
+      const apiUrl = "http://localhost:8080";
+      const requestOptions = {
+        method: "PATH",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+      };
+  
+      fetch(`${apiUrl}/users/` + id, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+          console.log(res.data);
+          if (res.data) {
+            setUsers(res.data);
+          } else {
+            console.log("else");
+          }
+        });
+      }
     
 
     const checkOpen = (id: number): boolean => {
@@ -92,20 +121,29 @@ function Users() {
       localStorage.clear();
       window.location.href = "/login";
     }
+    const [selectedUser, setSelectedUser] =
+    React.useState<UsersInterface>();
+
+    const handleSelectChange = (event: SelectChangeEvent<number>) => {
+      const name = event.target.name as keyof typeof users;
+      setUsers({ ...users, [name]: event.target.value });
+    };
 
     useEffect(() => {
       getUsers();
     }, []);
 
+    
     const columns: GridColDef[] = [
-      { field: "ID", headerName: "ลำดับ", width: 50 },
+     
       {field: "Name",
-      headerName: "ชื่อ - นามสกุล",
+      headerName: "Firstname - Lastname",
       width: 220,
       valueGetter: (params) => params.row.FirstName + "  " + params.row.LastName ,
     },
       { field: "Email", headerName: "Email", width: 180 },
-      { field: "Role", headerName: "Role", width: 100 },
+      { field: "Role", headerName: "Role", width: 100, 
+      valueGetter: (params) => params.row.Role.Name,},
     
 
     {
@@ -114,9 +152,26 @@ function Users() {
       sortable: false,
       renderCell: ( params ) => (
         <React.Fragment>
-          <IconButton size="small" component={RouterLink} to={`/usercreate/${params.row.ID}`}>
+          <IconButton size="small" onClick={() => handleOpen(params.row.ID)}>
                 <EditIcon color="success" fontSize="small"></EditIcon>
               </IconButton>
+              <DialogContent>
+            <Select
+              id="RoleID"
+              value={roles.ID}
+              inputProps={{
+                name: "RoleID",
+              }}
+              fullWidth
+              onChange={handleSelectChange}
+            >
+            </Select>
+        </DialogContent>
+        <DialogActions>
+                  <Button onClick={() => handleCloseDialog(params.row.ID)}>Cancel</Button>
+                  <Button onClick={() => updateUser(params.row.ID)}>OK</Button>
+                </DialogActions>
+
               <IconButton size="small" onClick={() => handleOpen(params.row.ID)}>
                 <DeleteIcon color="error" fontSize="small"></DeleteIcon>
               </IconButton>
