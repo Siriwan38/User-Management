@@ -1,20 +1,51 @@
-import React from 'react';
-import { Link, To  } from 'react-router-dom';
+import React from "react";
+import { Link, To } from "react-router-dom";
 
+type path = {
+  name: string;
+  url: string;
+};
 
-const Breadcrumb = ({ paths}) => {
+interface props {
+  paths: Array<path>;
+}
+
+const Breadcrumb = ({ paths }: props) => {
   return (
     <nav aria-label="breadcrumb">
       <ol className="breadcrumb">
-        {paths.map((path: { name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; url: To; }, index: React.Key | null | undefined) => (
-          <li key={index} className={`breadcrumb-item ${index === paths.length - 1 ? 'active' : ''}`}>
-            {index === paths.length - 1 ? (
-              path.name
-            ) : (
-              <Link to={path.url}>{path.name}</Link>
-            )}
-          </li>
-        ))}
+        {paths.map(
+          (
+            path: {
+              name:
+                | string
+                | number
+                | boolean
+                | React.ReactElement<
+                    any,
+                    string | React.JSXElementConstructor<any>
+                  >
+                | React.ReactFragment
+                | null
+                | undefined;
+              url: To;
+            },
+            index: React.Key | null | undefined
+          ) => (
+            <li
+              key={index}
+              className={`breadcrumb-item ${
+                index === paths.length - 1 ? "active" : ""
+              }`}
+            >
+              {index === paths.length - 1 ? (
+                path.name
+              ) : (
+                <Link to={path.url}>{path.name}</Link>
+              )}
+            </li>
+          )
+        )}
       </ol>
     </nav>
   );

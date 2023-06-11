@@ -24,8 +24,8 @@ func main() {
 			// protected.POST("/users", controller.CreateUser)
 			protected.GET("/users", controller.ListUsers)
 			protected.GET("/user/:id", controller.GetUser)
-			protected.PATCH("/users", controller.UpdateUser)
-			protected.DELETE("/Users/:id", controller.DeleteUser)
+			protected.PATCH("/users/:id", controller.UpdateUser)
+			protected.DELETE("/users/:id", controller.DeleteUser)
 
 			// // Province Routes
 			// protected.GET("/provinces", controller_user.ListProvince)

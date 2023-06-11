@@ -17,16 +17,8 @@ import Slide from "./routes/Slide";
 import Dashboard from "./routes/DropAdmin/Dashboard";
 import Breadcrumb from "./components/Breadcrumbs";
 
-
 export default function App() {
   const [token, setToken] = React.useState<String>("");
-
-  const paths = [
-    { name: 'Home', url: '/' },
-    { name: 'About', url: '/about' },
-    { name: 'Dashboard', url: '/dropdown/dashboard' },
-    { name: 'Group', url: '/dropdown/group' },
-  ];
 
   useEffect(() => {
     let token = localStorage.getItem("token");
@@ -40,9 +32,7 @@ export default function App() {
     <Router>
       <div>
         <Navr />
-        <Breadcrumb paths={paths} />
-        
-        
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -62,7 +52,6 @@ export default function App() {
           <Route path="/dropdown/taskuser" element={<Taskuser />} />
           <Route path="/dropdown/tasksuperuser" element={<Tasksuperuser />} />
           <Route path="/slide" element={<Slide />} />
-          
 
           {/* <Route path="/service" element={Service} />
          <Route path="/about" element={About} />

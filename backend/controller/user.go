@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Siriwan38/project-app/entity"
@@ -78,14 +79,17 @@ func UpdateUser(c *gin.Context) {
 
 	var payload entity.User
 	var newpayload entity.User
+	id := c.Param("id")
+	fmt.Println(payload.ID)
+	fmt.Println(newpayload.ID)
 
 	if err := c.ShouldBindJSON(&payload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", payload.ID).First(&newpayload); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "payment not found"})
+	if tx := entity.DB().Where("id = ?", id).Find(&newpayload); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "user not found"})
 		return
 	}
 
